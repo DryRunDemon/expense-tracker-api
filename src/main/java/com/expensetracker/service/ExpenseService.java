@@ -1,6 +1,7 @@
 package com.expensetracker.service;
 
 import com.expensetracker.entity.Expense;
+import com.expensetracker.exception.ResourceNotFoundException;
 import com.expensetracker.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,12 @@ public class ExpenseService {
             existingExpense.setExpenseDate(updatedExpense.getExpenseDate());
             existingExpense.setDescription(updatedExpense.getDescription());
             return expenseRepository.save(existingExpense);
-        }).orElseThrow(() -> new RuntimeException("Expense not found with id: " + id));
+        }).orElseThrow(() -> new ResourceNotFoundException("Expense not found with id: " + id));
     }
 
     public void deleteExpense(Long id) {
         if (!expenseRepository.existsById(id)) {
-            throw new RuntimeException("Expense not found with id: " + id);
+            throw new ResourceNotFoundException("Expense not found with id: " + id);
         }
         expenseRepository.deleteById(id);
     }
