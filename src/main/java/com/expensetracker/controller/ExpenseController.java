@@ -2,21 +2,24 @@ package com.expensetracker.controller;
 
 import com.expensetracker.entity.Expense;
 import com.expensetracker.service.ExpenseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/expenses")
+@RequestMapping("/api/v1/expenses")
 public class ExpenseController {
 
-    @Autowired
-    private ExpenseService expenseService;
+    private final ExpenseService expenseService;
+
+    public ExpenseController(ExpenseService expenseService) {
+        this.expenseService = expenseService;
+    }
 
     @PostMapping
-    public ResponseEntity<Expense> createExpense(@RequestBody Expense expense) {
+    public ResponseEntity<Expense> createExpense(@Valid @RequestBody Expense expense) {
         Expense savedExpense = expenseService.saveExpense(expense);
         return ResponseEntity.ok(savedExpense);
     }
@@ -34,7 +37,7 @@ public class ExpenseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
+    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @Valid @RequestBody Expense expense) {
         Expense updatedExpense = expenseService.updateExpense(id, expense);
         return ResponseEntity.ok(updatedExpense);
     }

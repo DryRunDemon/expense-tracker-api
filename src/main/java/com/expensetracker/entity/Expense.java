@@ -1,6 +1,9 @@
 package com.expensetracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,14 +15,25 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title is required")
+    @Column(nullable = false)
     private String title;
 
+    @NotNull(message = "Amount is required")
+    @Positive(message = "Amount must be greater than 0")
+    @Column(nullable = false)
     private BigDecimal amount;
 
+    @NotBlank(message = "Category is required")
+    @Column(nullable = false)
     private String category;
 
+    @NotNull(message = "Expense date is required")
+    @Column(nullable = false)
     private LocalDate expenseDate;
 
+    @NotBlank(message = "Description is required")
+    @Column(nullable = false)
     private String description;
 
     public Expense() {
